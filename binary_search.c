@@ -61,50 +61,47 @@ void binary_search(int *arr, int n)
 		int midind = (n-1)/2;
 		int highind = n - 1;
 		
-		int val = 1;
+		int val = 0;
 		
-		while (val != 0)
+		while (lowind < highind)
 		{
-				if (m > low && m < mid)
-				{
-					high = mid;
-					highind = midind;
-					int temp = arr[highind/2];
-					mid = temp;
-					midind = highind/2;
-				}
-				
-				else if (m < high && m > mid)
-				{
-					low = mid;
-					lowind = midind;
-					int temp = arr[lowind/2];
-					mid = temp;
-					midind = lowind/2;
-				}
-				
-				else if (m == mid)
-				{
-					printf("It is found at %d index.", midind);
-					break;
-				}
-				else if (m == high)
-				{
-					printf("It is found at %d index.", highind);
-					break;
-				}
-				else if (m == low)
-				{
-					printf("It is found at %d index.", lowind);
-					break;
-				}
-				
-				else
-				{
-					val = 0;
-					break;
-				}
-		}
+            
+            if (m == mid)
+			{
+				printf("It is found at %d index.", midind);
+                val = 1;
+				break;
+            }
+
+            else if (m == high)
+            {
+                printf("It is found at %d index.", highind);
+                val = 1;
+                break;
+            }
+            else if (m == low)
+            {
+                printf("It is found at %d index.", lowind);
+                val = 1;
+                break;
+            }
+
+            else if (m < mid)
+            {
+                high = arr[midind - 1];
+                highind = midind - 1;
+                midind = (lowind + highind) / 2;
+                mid = arr[midind];
+            }
+            
+            else if (m > mid)
+            {
+                low = arr[midind + 1];
+                lowind = midind + 1;
+                midind = (lowind + highind) / 2;
+                mid = arr[midind];
+            }
+         }   
 		
 		if (val == 0) printf("Not found.");
 }
