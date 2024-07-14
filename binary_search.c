@@ -63,7 +63,7 @@ void binary_search(int *arr, int n)
 		
 		int val = 0;
 		
-		while (lowind < highind)
+		do
 		{
             
             if (m == mid)
@@ -101,7 +101,7 @@ void binary_search(int *arr, int n)
                 midind = (lowind + highind) / 2;
                 mid = arr[midind];
             }
-         }   
+         }while (lowind < highind);
 		
 		if (val == 0) printf("Not found.");
 }
