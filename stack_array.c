@@ -7,7 +7,7 @@ int stack[max] = {0};
 
 int isEmpty();
 int isFull();
-void push(int n);
+void push(int n, int arr[]);
 void pop();
 void peek();
 void display();
@@ -27,10 +27,20 @@ int main()
 		{
 			case 1:
 				int n;
-				printf("Enter your element: ");
+				int z;
+				
+				printf("\nHow many elements do you want to insert: %d\n\n", n);
 				scanf("%d", &n);
 				
-				push(n);
+				if (10 - n - (top + 1) > -1)
+				
+				for (int k = 0; k < n; k++)
+				{
+					printf("Enter element %d: ", k + 1); 
+					scanf("%d", &z);
+					push(z);
+				}
+				
 				break;
 			
 			case 2:
@@ -97,17 +107,16 @@ int isFull()
 	return 0;
 }
 
-void push(int n)
+void push(int n, int arr[])
 {
-	if (isFull() == 0)
+	if ()
 	{
-		stack[++top] = n;
-		printf("\nSuccesfully pushed %d to the stack.\n\n", n); 
+		
 	}
 	
 	else
 	{
-		printf("Error. Stack is full.");
+		printf("\n\nError. Not enough space\n\n.");
 	}
 }
 
@@ -115,12 +124,12 @@ void pop()
 {
 	if (isEmpty() == 0)
 	{
-		printf("\nThe element deleted was: %d\n\n", stack[top]); 
+		printf("\n\nThe element deleted was: %d\n\n", stack[top]); 
 		top--;
 		return;
 	}
 	
-	printf("The stack is empty, cannot delete anything.");
+	printf("\n\nThe stack is empty, cannot delete anything.\n\n");
 	return;
 }
 
@@ -129,17 +138,17 @@ void peek()
 {
 	if (isEmpty() == 0)
 	{
-		printf("\nThe top element currently: %d\n\n", stack[top]);
+		printf("\n\nThe top element currently: %d\n\n", stack[top]);
 		return;
 	}
-	printf("\n Stack is empty\n\n");
+	printf("\n\nStack is empty\n\n");
 	return;
 }
 
 
 void display()
 {
-	printf("\nThis is how the stack looks starting from the top.\n\n");
+	printf("\n\nThis is how the stack looks starting from the top.\n\n");
 	
 	for (int i = top; i >= 0; i--)
 	{
