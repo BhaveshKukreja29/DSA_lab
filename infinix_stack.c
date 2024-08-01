@@ -71,27 +71,15 @@ int main()
 		}
 		
 		else if (in[i] == '+' || in[i] == '-' || in[i] == '*' || in[i] == '/' || in[i] == '^' || in[i] == '%')
-		{
-			int u = pre(in[i]);
-			int st = pre(stack[top]);
-			
-			if (u > st)
-			{
-				stack[++top] = in[i];
-			}
-			
-			else if (u == st)
-			{
-				po[j++] = stack[top];
-				stack[top] = in[i];
-			}
-			
-			else
-			{
-				po[j++] = stack[top];
-				stack[top] = in[i];
-			}
-		}
+        {
+            while (top >= 0 && stack[top] != '(' && pre(in[i]) <= pre(stack[top]))
+            {
+                po[j++] = stack[top];
+                pop();
+            }
+            stack[++top] = in[i];
+        }
+
 	}
 	
 	while (top >= 0)
