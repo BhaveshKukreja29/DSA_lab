@@ -12,6 +12,7 @@ int isFull();
 void push(int n);
 void pop();
 void eval(char s[]);
+int power(int base, int exp);
 
 
 int main()
@@ -40,6 +41,7 @@ void eval(char s[])
             pop();
             
             stack[top] = stack[top] + temp;
+            printf("Top: %d\n", stack[top]);
         }
         
         else if (s[i] == '-')
@@ -48,6 +50,7 @@ void eval(char s[])
             pop();
             
             stack[top] = stack[top]- temp;
+            printf("Top: %d\n", stack[top]);
         }
         
         else if (s[i] == '*')
@@ -56,6 +59,7 @@ void eval(char s[])
             pop();
             
             stack[top] = stack[top] * temp;
+            printf("Top: %d\n", stack[top]);
         }
         
         else if (s[i] == '/')
@@ -64,6 +68,7 @@ void eval(char s[])
             pop();
             
             stack[top] = stack[top] / temp;
+            printf("Top: %d\n", stack[top]);
         }
         
         else if (s[i] == '^')
@@ -71,7 +76,8 @@ void eval(char s[])
             int temp = stack[top];
             pop();
             
-            stack[top] = stack[top] ^ temp;
+            stack[top] = power(stack[top], temp);
+            printf("Top: %d\n", stack[top]);
         }
         
         else if (s[i] == '%')
@@ -80,6 +86,7 @@ void eval(char s[])
             pop();
             
             stack[top] = stack[top] % temp;
+            printf("Top: %d\n", stack[top]);
         }
 	}
 	
@@ -128,4 +135,15 @@ void pop()
 
 	printf("The stack is empty, cannot delete anything.");
 	return;
+}
+
+int power(int base, int exp)
+{
+	int prod = 1;
+	for (int z = 0; z < exp; z++)
+	{
+		prod *= base;
+	}
+	
+	return prod;
 }
