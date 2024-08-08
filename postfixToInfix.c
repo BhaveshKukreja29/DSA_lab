@@ -36,60 +36,53 @@ void eval(char s[])
 		}
 		
 		else if (s[i] == '+')
-        {
-            int temp = stack[top];
-            pop();
-            
-            stack[top] = stack[top] + temp;
-            printf("Top: %d\n", stack[top]);
-        }
-        
-        else if (s[i] == '-')
-        {
-            int temp = stack[top];
-            pop();
-            
-            stack[top] = stack[top]- temp;
-            printf("Top: %d\n", stack[top]);
-        }
-        
-        else if (s[i] == '*')
-        {
-            int temp = stack[top];
-            pop();
-            
-            stack[top] = stack[top] * temp;
-            printf("Top: %d\n", stack[top]);
-        }
-        
-        else if (s[i] == '/')
-        {
-            int temp = stack[top];
-            pop();
-            
-            stack[top] = stack[top] / temp;
-            printf("Top: %d\n", stack[top]);
-        }
-        
-        else if (s[i] == '^')
-        {
-            int temp = stack[top];
-            pop();
-            
-            stack[top] = power(stack[top], temp);
-            printf("Top: %d\n", stack[top]);
-        }
-        
-        else if (s[i] == '%')
-        {
-            int temp = stack[top];
-            pop();
-            
-            stack[top] = stack[top] % temp;
-            printf("Top: %d\n", stack[top]);
-        }
+	        {
+	            int temp = stack[top];
+	            pop();
+	            
+	            stack[top] = stack[top] + temp;
+	        }
+	        
+	        else if (s[i] == '-')
+	        {
+	            int temp = stack[top];
+	            pop();
+	            
+	            stack[top] = stack[top]- temp;
+	        }
+	        
+	        else if (s[i] == '*')
+	        {
+	            int temp = stack[top];
+	            pop();
+	            
+	            stack[top] = stack[top] * temp;
+	        }
+	        
+	        else if (s[i] == '/')
+	        {
+	            int temp = stack[top];
+	            pop();
+	            
+	            stack[top] = stack[top] / temp;
+	        }
+	        
+	        else if (s[i] == '^')
+	        {
+	            int temp = stack[top];
+	            pop();
+	            
+	            stack[top] = power(stack[top], temp);
+	        }
+	        
+	        else if (s[i] == '%')
+	        {
+	            int temp = stack[top];
+	            pop();
+	            
+	            stack[top] = stack[top] % temp;
+	        }
 	}
-	
 }
 
 int isEmpty()
