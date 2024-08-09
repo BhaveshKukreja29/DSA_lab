@@ -27,15 +27,47 @@ int main()
 		switch(ch)
 		{
 			case 1:
+				int num1;
 				int n;
-				printf("Enter your element: ");
-				scanf("%d", &n);
+				
+				printf("Enter the number of elements to enqueue: ");
+				scanf("%d", &num1);
+				
+				if (num1 > (max - rear - 1))
+				{
+					printf("\nCannot enqueue %d because not enough space, try %d instead.\n\n", num1, max - rear - 1);
+					break;
+				}
+				
+				for (int i = 0; i < num1; i++)
+				{
+					printf("Enter the element %d: ", i + 1);
+					scanf("%d", &n);
 
-				enq(n);
+					enq(n);
+				}
+				
+				display();
 				break;
 
 			case 2:
-				deq();
+				int num2;
+				
+				printf("Enter the number of elements to dequeue: ");
+				scanf("%d", &num2);
+				
+				if (num2 > (rear + 1))
+				{
+					printf("\nCannot dequeue %d because not elements, try %d instead.\n\n", num2, rear + 1);
+					break;
+				}
+				
+				for (int i = 0; i < num2; i++)
+				{
+					deq();
+				}
+				
+				display();
 				break;
 
 			case 3:
@@ -109,14 +141,12 @@ void enq(int n)
 		rear = 0;
 		queue[front] = n;
 		printf("\nSuccesfully enqueued %d.\n\n", n);
-		display();
 	}
 	
 	else if (isFull() == 0)
 	{
 		queue[++rear] = n;
 		printf("\nSuccesfully enqueued %d.\n\n", n);
-		display(); 
 	}
 
 	else
@@ -138,8 +168,6 @@ void deq()
 		
 		rear--;
 		
-		display();
-		
 		return;
 	}
 
@@ -152,7 +180,8 @@ void frontt()
 {
 	if (isEmpty() == 0)
 	{
-		printf("\nThe front element currently: %d\n\n", queue[front]);
+		printf("\nThe front element currently: %d\n", queue[front]);
+		printf("\nThe index is %d.\n\n", front);
 		return;
 	}
 	printf("\nQueue is empty.\n\n");
@@ -169,9 +198,15 @@ void display()
 		{
 			printf("%d ", queue[i]);
 		}
-
-		printf("\n\n");
+		
+		printf("\nThe front element currently: %d\n", queue[front]);
+		printf("\nThe index is %d.\n", front);
+		
+		printf("\nThe rear element currently: %d\n", queue[rear]);
+		printf("\nThe index is %d.\n\n", rear);
 	}
+	
+	
 	
 	else printf("The queue is empty.\n\n");
 
