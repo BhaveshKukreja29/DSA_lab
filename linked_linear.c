@@ -6,15 +6,16 @@ typedef struct node{
 	struct node *next;
 }node;
 
-void createll(node *head);
-void traverse(node *head);
-void insert(node *head, int data);
-void delete(node *head,int data);
-void deletell(node *head);
+node *head = NULL;
+
+void createll();
+void traverse();
+void insert(int data);
+void delete(int data);
+void deletell();
 
 int main()
 {
-	node *head = NULL;
 	int c;
 	
 	do{
@@ -25,12 +26,11 @@ int main()
 				
 		scanf("%d", &c);
 		
+        int temp;
+		int length;
 		switch(c)
 		{
 			case 1:
-				int temp;
-				int length;
-				
 				printf("Enter the number of nodes: ");
 				scanf("%d", &length);
 				
@@ -38,10 +38,10 @@ int main()
 				{
 					printf("Enter your data: ");
 					scanf("%d", &temp);
-					insert(head, temp);
+
+					insert(temp);
 				}
-				
-				traverse(head);
+				traverse();
 				break;
 				
 			case 2:
@@ -52,13 +52,13 @@ int main()
 				{
 					printf("Enter your data to be deleted: ");
 					scanf("%d", &temp);
-					delete(head, temp);
+					delete(temp);
 				}
-				traverse(head);
+				traverse();
 				break;
 				
 			case 3:
-				traverse(head);
+				traverse();
 				break;
 				
 			case 4:
@@ -73,45 +73,42 @@ int main()
 	return 0;
 }
 
-void createll(node *head)
-{
-	if (head == NULL)
-	{
-		head = (node *)malloc(sizeof(node));
-	}
-}
-void traverse(node *head)
+void traverse()
 {
 	int count = 0;
-	node *temp;
+	node *temp = NULL;
 	printf("This is how the list looks like currently\n\n");
 	
 	temp = head;
 	
 	if (temp == NULL)
 	{
-		printf("Linked list empty");
+		printf("Linked list empty\n\n");
 		return;
 	}
 	
-	while (temp != NULL)
+	while (temp->next != NULL)
 	{
 		printf("%d --> ", temp->data);
 		temp = temp -> next;
 		count++;
 	}
-	
-	printf("Number of nodes is: %d", count);
+    printf("%d\n\n", temp->data);
+	count++;
+    
+	printf("Number of nodes is: %d\n\n", count);
 	return;
 }
 		 
-void insert(node *head, int data)
+void insert(int data)
 {
 	if (head == NULL)
 	{
-		createll(head);
+		head = (node *)malloc(sizeof(node));
+
 		head->data = data;
 		head->next = NULL;
+
 		return;
 	}
 	
@@ -130,7 +127,7 @@ void insert(node *head, int data)
 	}
 }
 		
-void delete(node *head,int data)
+void delete(int data)
 {
 	if (head == NULL)
 	{
@@ -162,7 +159,7 @@ void delete(node *head,int data)
 	}
 }
 
-void deletell(node *head)
+void deletell()
 {
 	if (head == NULL)
 	{
