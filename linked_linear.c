@@ -11,6 +11,7 @@ node *head = NULL;
 void createll();
 void traverse();
 void insert(int data);
+void insert_where(int temp, int tempref, int choice);
 void delete(int data);
 void deletell();
 
@@ -27,33 +28,43 @@ int main()
 		scanf("%d", &c);
 		
         int temp;
-		int length;
+        int choice;
+        int tempref;
 		switch(c)
 		{
 			case 1:
-				printf("Enter the number of nodes: ");
-				scanf("%d", &length);
+                printf("1 to insert at beggining, 2 to insert before some node, 3 to insert after some node.\n");
+				printf("Enter the choice: ");
+				scanf("%d", &choice);
 				
-				for (int i = 0; i < length; i++)
-				{
-					printf("Enter your data: ");
-					scanf("%d", &temp);
+                if (choice == 2 || choice == 3)
+                {
+                    printf("Enter the reference node: ");
+                    scanf("%d", &tempref);
 
-					insert(temp);
-				}
+                    printf("Enter your data: ");
+                    scanf("%d", &temp);
+
+                    insert_where(temp, tempref, choice);
+                }
+
+                else
+                {
+                    printf("Enter your data: ");
+                    scanf("%d", &temp);
+
+                    insert(temp);
+                }
+                
+				
 				traverse();
 				break;
 				
 			case 2:
-				printf("Enter the number of nodes: ");
-				scanf("%d", &length);
+                printf("Enter your data to be deleted: ");
+                scanf("%d", &temp);
+                delete(temp);
 				
-				for (int i = 0; i < length; i++)
-				{
-					printf("Enter your data to be deleted: ");
-					scanf("%d", &temp);
-					delete(temp);
-				}
 				traverse();
 				break;
 				
@@ -93,7 +104,7 @@ void traverse()
 		temp = temp -> next;
 		count++;
 	}
-    printf("%d\n\n", temp->data);
+    	printf("%d\n\n", temp->data);
 	count++;
     
 	printf("Number of nodes is: %d\n\n", count);
@@ -114,15 +125,67 @@ void insert(int data)
 	
 	else
 	{
-		node *temp = head;
-		while (temp->next != NULL)
-		{
-			temp = temp->next;
-		}
-		temp->next = (node *)malloc(sizeof(node));
-		temp = temp->next;
+		node *temp = (node *)malloc(sizeof(node));
+		temp->next = head;
 		temp->data = data;
-		temp->next = NULL;
+		
+		head = temp;
+		return;
+	}
+}
+
+void insert_where(int data, int tempref, int choice)
+{
+    if (head == NULL)
+	{
+		head = (node *)malloc(sizeof(node));
+
+		head->data = data;
+		head->next = NULL;
+
+		return;
+	}
+	
+	else
+	{
+        node *temp = head;
+        node *store;
+
+        if (choice == 2)
+        {
+            while (temp->next != NULL)
+            {
+				if (temp->data == tempref) break;
+                temp = temp->next;
+            }
+
+            if (temp->data != tempref && temp->next == NULL)
+            {
+                printf("Couldn't find the reference.\n\n");
+                return;
+            }
+        }
+		
+        else 
+        {
+            while (temp->next != NULL)
+            {
+				if (temp->data == tempref) break;
+                temp = temp->next;
+            }
+
+            if (temp->data != tempref && temp->next == NULL)
+            {
+                printf("Couldn't find the reference.\n\n");
+                return;
+            }
+        }
+		
+        store = (node *)malloc(sizeof(node));
+        store->data = data;
+        store->next = temp->next;
+        temp->next = store;
+
 		return;
 	}
 }
