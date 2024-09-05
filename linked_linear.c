@@ -155,11 +155,11 @@ void insert_where(int data, int tempref, int choice)
         {
             while (temp->next != NULL)
             {
-				if (temp->data == tempref) break;
+		if (temp->next->data == tempref) break;
                 temp = temp->next;
             }
 
-            if (temp->data != tempref && temp->next == NULL)
+            if (temp->next->data != tempref && temp->next == NULL)
             {
                 printf("Couldn't find the reference.\n\n");
                 return;
@@ -170,7 +170,7 @@ void insert_where(int data, int tempref, int choice)
         {
             while (temp->next != NULL)
             {
-				if (temp->data == tempref) break;
+		if (temp->data == tempref) break;
                 temp = temp->next;
             }
 
