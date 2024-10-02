@@ -12,6 +12,7 @@ node *head = NULL;
 void traverse();
 void insert(int data);
 void insert_where(int temp, int tempref, int choice);
+void insertEnd(int data);
 void delete(int data);
 void deletell();
 
@@ -34,11 +35,11 @@ int main()
         switch (c)
         {
             case 1:
-                printf("1 to insert at beginning, 2 to insert before some node, 3 to insert after "
-                       "some node.\n");
-                printf("Enter the choice: ");
-                scanf("%d", &choice);
-
+                printf("1 to insert at beggining, 2 to insert before some node, 3 to insert after some node.\n");
+                printf("Enter 4 for insert at end.\n");
+				printf("Enter the choice: ");
+				scanf("%d", &choice);
+				
                 if (choice == 2 || choice == 3)
                 {
                     printf("Enter the reference node: ");
@@ -49,6 +50,14 @@ int main()
 
                     insert_where(temp, tempref, choice);
                 }
+
+                else if (choice == 4)
+                {
+                    printf("Enter your data: ");
+                    scanf("%d", &temp);
+                    insertEnd(temp);
+                }
+
                 else
                 {
                     printf("Enter your data: ");
@@ -56,9 +65,10 @@ int main()
 
                     insert(temp);
                 }
-
-                traverse();
-                break;
+                
+				
+				traverse();
+				break;
 
             case 2:
                 printf("Enter your data to be deleted: ");
@@ -141,6 +151,35 @@ void insert(int data)
         head = temp;
         return;
     }
+}
+
+void insertEnd(int data)
+{
+    if (head == NULL)
+	{
+		head = (node *)malloc(sizeof(node));
+
+		head->data = data;
+		head->next = NULL;
+
+		return;
+	}
+	
+	else
+	{
+		node *temp = head->next;
+        while (temp->next != head)
+        {
+            temp = temp->next;
+        }
+
+        node *store = (node *)malloc(sizeof(node));
+		store->data = data;
+		store->next = head;
+        temp->next = store;
+
+		return;
+	}
 }
 
 void insert_where(int data, int tempref, int choice)
