@@ -8,10 +8,10 @@ typedef struct node{
 
 node *head = NULL;
 
-void createll();
 void traverse();
 void insert(int data);
 void insert_where(int temp, int tempref, int choice);
+void insertEnd(int data);
 void delete(int data);
 void deletell();
 
@@ -34,6 +34,7 @@ int main()
 		{
 			case 1:
                 printf("1 to insert at beggining, 2 to insert before some node, 3 to insert after some node.\n");
+                printf("Enter 4 for insert at end.\n");
 				printf("Enter the choice: ");
 				scanf("%d", &choice);
 				
@@ -46,6 +47,13 @@ int main()
                     scanf("%d", &temp);
 
                     insert_where(temp, tempref, choice);
+                }
+
+                else if (choice == 4)
+                {
+                    printf("Enter your data: ");
+                    scanf("%d", &temp);
+                    insertEnd(temp);
                 }
 
                 else
@@ -130,6 +138,35 @@ void insert(int data)
 		temp->data = data;
 		
 		head = temp;
+		return;
+	}
+}
+
+void insertEnd(int data)
+{
+    if (head == NULL)
+	{
+		head = (node *)malloc(sizeof(node));
+
+		head->data = data;
+		head->next = NULL;
+
+		return;
+	}
+	
+	else
+	{
+		node *temp = head;
+        while (temp->next != NULL)
+        {
+            temp = temp->next;
+        }
+
+        node *store = (node *)malloc(sizeof(node));
+		store->data = data;
+		store->next = NULL;
+        temp->next = store;
+
 		return;
 	}
 }
