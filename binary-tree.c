@@ -22,7 +22,6 @@ node *get_minimum(node *parent);
 node *get_maximum(node *parent);
 node *delete_node(node *parent, int key);
 int search_node(node *parent, int key);
-void mirror_tree(node *parent);
 
 int main() 
 {
@@ -253,15 +252,4 @@ int tree_height(node *parent)
     int left_height = tree_height(parent->kid1);
     int right_height = tree_height(parent->kid2);
     return (left_height > right_height ? left_height : right_height) + 1;
-}
-
-void mirror_tree(node *parent) 
-{
-    if (parent == NULL) return;
-    node *temp;
-    mirror_tree(parent->kid1);
-    mirror_tree(parent->kid2);
-    temp = parent->kid1;
-    parent->kid1 = parent->kid2;
-    parent->kid2 = temp;
 }
