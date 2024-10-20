@@ -1,255 +1,206 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct node {
+typedef struct node{
     int data;
-    struct node *kid1;
-    struct node *kid2;
-} node;
+    struct node *left;
+    struct node *right;
+}node;
 
 node *root = NULL;
 
-void add();
-void remove_node();
-void traverse_inorder(node *parent);
-void traverse_preorder(node *parent);
-void traverse_postorder(node *parent);
-void find();
-int count_nodes(node *parent);
-int count_leafnodes(node *parent);
-int tree_height(node *parent);
-node *get_minimum(node *parent);
-node *get_maximum(node *parent);
-node *delete_node(node *parent, int key);
-int search_node(node *parent, int key);
+node *insert(node *parent, int data);
+node *delete(node *parent, int data);
+node *get_min(node *parent);
+void search(node * parent, int data);
+void preorder(node *parent);
+void inorder(node *parent);
+int count(node *parent);
+int countLeaf(node *parent);
+int countInternal(node *parent);
 
-int main() 
+int main()
 {
     int c;
+    int temp;
 
-    while (c != 10)
-    {
-        printf("Enter 1 to add\nEnter 2 to remove\nEnter 3 for inorder traversal\n");
-        printf("Enter 4 for preorder traversal\nEnter 5 for postorder traversal\n");
-        printf("Enter 6 to find an element\nEnter 7 to count total nodes\n");
-        printf("Enter 8 to count leaf nodes\nEnter 9 for tree height\n");
-        printf("Enter 10 to exit\n");
-
-        printf("Enter choice: ");
+    do{
+        printf("Enter 1 to insert, 2 to search, 3 to traverse, 4 to count.\n");
+        printf("Enter 5 to delete\n");
+        printf("Enter 6 for inorder\n");
+        printf("7 for leaf, 8 for internal\n");
+        printf("Enter 9 to exit\n");
+        printf("Enter your choice: ");
         scanf("%d", &c);
 
-        switch (c)
+        switch(c)
         {
             case 1:
-                add();
+                printf("Enter integer: ");
+                scanf("%d", &temp);
+                root = insert(root, temp);
                 break;
             case 2:
-                remove_node();
+                printf("Enter integer to search: ");
+                scanf("%d", &temp);
+                search(root, temp);
                 break;
             case 3:
-                traverse_inorder(root);
-                printf("\n");
+                preorder(root);
                 break;
-            case 4:
-                traverse_preorder(root);
-                printf("\n");
+            case 4: 
+                temp = count(root);
+                printf("Count is: %d \n\n", temp);
                 break;
             case 5:
-                traverse_postorder(root);
-                printf("\n");
+                printf("Enter the node to be deleted: ");
+                scanf("%d", &temp);
+                root = delete(root, temp);
                 break;
             case 6:
-                find();
+                inorder(root);
                 break;
+
             case 7:
-                printf("Total nodes: %d\n", count_nodes(root));
+                temp = countLeaf(root);
+                printf("Leafs is: %d", temp);
                 break;
             case 8:
-                printf("Total leaf nodes: %d\n", count_leafnodes(root));
+                temp = countInternal(root);
+                printf("Internal is: %d", temp);
                 break;
             case 9:
-                printf("Tree height: %d\n", tree_height(root));
-                break;
-            case 10:
                 break;
             default:
                 printf("Invalid choice\n");
-                break;
         }
-    }
+    }while(c != 9);
+
+    return 0;
 }
 
-void add() 
-{
-    int data;
-    printf("Enter data: ");
-    scanf("%d", &data);
-
-    node *new_node = (node *)malloc(sizeof(node));
-    new_node->data = data;
-    new_node->kid1 = NULL;
-    new_node->kid2 = NULL;
-
-    if (root == NULL)
-    {
-        root = new_node;
-    }
-    else
-    {
-        node *temp = root;
-        node *parent = NULL;
-
-        while (temp != NULL)
-        {
-            parent = temp;
-            if (data < temp->data)
-            {
-                temp = temp->kid1;
-            }
-            else
-            {
-                temp = temp->kid2;
-            }
-        }
-
-        if (data < parent->data)
-        {
-            parent->kid1 = new_node;
-        }
-        else
-        {
-            parent->kid2 = new_node;
-        }
-    }
-}
-
-void remove_node() 
-{
-    int key;
-    printf("Enter value to remove: ");
-    scanf("%d", &key);
-    root = delete_node(root, key);
-}
-
-node *delete_node(node *parent, int key) 
+node *insert(node *parent, int data)
 {
     if (parent == NULL)
     {
+        node *newNode = (node *)malloc(sizeof(node));
+        newNode->data = data;
+        newNode->left = NULL;
+        newNode->right = NULL;
+
+        return newNode;
+    }
+
+    if (data == parent->data)
+    {
+        printf("Node already there\n");
         return parent;
     }
-    
-    if (key < parent->data)
+
+    if (data > parent->data)
     {
-        parent->kid1 = delete_node(parent->kid1, key);
+        parent->right = insert(parent->right, data);
     }
-    else if (key > parent->data)
+
+    else if (data < parent->data)
     {
-        parent->kid2 = delete_node(parent->kid2, key);
+        parent->left = insert(parent->left, data);
     }
-    else
-    {
-        if (parent->kid1 == NULL)
-        {
-            node *temp = parent->kid2;
-            free(parent);
-            return temp;
-        }
-        else if (parent->kid2 == NULL)
-        {
-            node *temp = parent->kid1;
-            free(parent);
-            return temp;
-        }
 
-        node *temp = get_minimum(parent->kid2);
-        parent->data = temp->data;
-        parent->kid2 = delete_node(parent->kid2, temp->data);
+    return  parent;
+}
+
+node *delete(node *parent, int data)
+{
+    if (parent == NULL)
+    {
+        return NULL;
     }
-    return parent;
-}
-
-node *get_minimum(node *parent) 
-{
-    while (parent && parent->kid1 != NULL)
+    if (data < parent->data)
     {
-        parent = parent->kid1;
+        parent->left = delete(parent->left, data);
+        return parent;
     }
-    return parent;
-}
-
-node *get_maximum(node *parent) 
-{
-    while (parent && parent->kid2 != NULL)
+    else if (data > parent->data)
     {
-        parent = parent->kid2;
-    }
-    return parent;
-}
-
-void traverse_inorder(node *parent) 
-{
-    if (parent == NULL) return;
-    traverse_inorder(parent->kid1);
-    printf("%d ", parent->data);
-    traverse_inorder(parent->kid2);
-}
-
-void traverse_preorder(node *parent) 
-{
-    if (parent == NULL) return;
-    printf("%d ", parent->data);
-    traverse_preorder(parent->kid1);
-    traverse_preorder(parent->kid2);
-}
-
-void traverse_postorder(node *parent) 
-{
-    if (parent == NULL) return;
-    traverse_postorder(parent->kid1);
-    traverse_postorder(parent->kid2);
-    printf("%d ", parent->data);
-}
-
-void find() 
-{
-    int key;
-    printf("Enter value to search: ");
-    scanf("%d", &key);
-    if (search_node(root, key))
-    {
-        printf("Element found\n");
+        parent->right = delete(parent->right, data);
+        return parent;
     }
     else
     {
-        printf("Element not found\n");
+        if (parent->left == NULL)
+        {
+            node *temp = parent->right;
+            free(parent);
+            return temp;
+        }
+        else if (parent->right == NULL)
+        {
+            node *temp = parent->left;
+            free(parent);
+            return temp;
+        }
+        else
+        {
+            node *temp = get_min(parent->right);
+            parent->data = temp->data;
+            parent->right = delete(parent->right, temp->data);
+        }
+
+        return parent;
     }
 }
 
-int search_node(node *parent, int key) 
+node *get_min(node *parent)
 {
-    if (parent == NULL) return 0;
-    if (key == parent->data) return 1;
-    if (key < parent->data) return search_node(parent->kid1, key);
-    return search_node(parent->kid2, key);
+    while (parent && parent->left != NULL)
+    {
+        parent = parent->left;
+    }
+    return parent;
 }
 
-int count_nodes(node *parent) 
+void search(node * parent, int data)
 {
-    if (parent == NULL) return 0;
-    return 1 + count_nodes(parent->kid1) + count_nodes(parent->kid2);
+    if (parent == NULL) printf("Not found.\n");
+    else if (parent->data == data) printf("Found.\n");
+    else if (data > parent->data) search(parent->right, data);
+    else search(parent->left, data);
+}
+void preorder(node *parent)
+{
+    if (parent == NULL) return;
+    printf("%d ", parent->data);
+    preorder(parent->left);
+    preorder(parent->right);
 }
 
-int count_leafnodes(node *parent) 
+void inorder(node *parent)
 {
-    if (parent == NULL) return 0;
-    if (parent->kid1 == NULL && parent->kid2 == NULL) return 1;
-    return count_leafnodes(parent->kid1) + count_leafnodes(parent->kid2);
+    if (parent == NULL) return;
+    inorder(parent->left);
+    printf("%d", parent->data);
+    inorder(parent->right);
 }
 
-int tree_height(node *parent) 
+int count(node *parent)
 {
-    if (parent == NULL) return -1;
-    int left_height = tree_height(parent->kid1);
-    int right_height = tree_height(parent->kid2);
-    return (left_height > right_height ? left_height : right_height) + 1;
+    if (parent == NULL) return 0;
+    return 1 + count(parent->left) + count(parent->right);
+}
+
+int countLeaf(node *parent)
+{
+    if (parent == NULL) return 0;
+    if (parent->left == NULL && parent->right == NULL) return 1;
+    return countLeaf(parent->left) + countLeaf(parent->right);
+}
+
+int countInternal(node *parent)
+{
+    if (parent == NULL) return 0;
+    if (parent->left != NULL || parent->right != NULL)
+    {
+        return 1 + countInternal(parent->left) + countInternal(parent->right);
+    }
 }
